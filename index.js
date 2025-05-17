@@ -1,12 +1,12 @@
 const express = require("express");
 require("dotenv").config();
+const serverless = require('serverless-http');
 const jwt = require("jsonwebtoken");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const cors = require("cors");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const port = process.env.PORT || 5000;
-
 const corsOptions = {
   origin: [
     "http://localhost:5173",
@@ -206,3 +206,7 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Boss is running on PORT ${port}`);
 });
+
+// Export as serverless function
+module.exports = app;
+module.exports.handler = serverless(app);
